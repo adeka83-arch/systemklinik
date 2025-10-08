@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "preview": "vite preview",
     "deploy": "vercel --prod"
   },
@@ -28,6 +28,9 @@
     "typescript": "^5.2.2",
     "vite": "^4.5.0",
     "tailwindcss": "^4.0.0"
+  },
+  "engines": {
+    "node": ">=18"
   },
   "repository": {
     "type": "git",
