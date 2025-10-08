@@ -1,0 +1,54 @@
+#!/bin/bash
+
+echo "🧹 CLEANING UP TESTING & DEBUG FILES..."
+
+# Remove all testing/debug components
+rm -f /components/SimpleAuth.tsx
+rm -f /components/DirectDatabaseTester.tsx  
+rm -f /components/DatabaseConnectionTester.tsx
+rm -f /components/AuthDebugger.tsx
+rm -f /components/DoctorAuthDiagnostic.tsx
+rm -f /components/LoginDebugger.tsx
+rm -f /components/ServerAuthDiagnostic.tsx
+rm -f /components/SupabaseAuthDebugger.tsx
+rm -f /components/DatabaseSetup.tsx
+rm -f /components/DatabaseSetupNew.tsx
+rm -f /components/DatabaseStatusChecker.tsx
+rm -f /components/EmergencyRecovery.tsx
+rm -f /components/QuickSetupHelper.tsx
+rm -f /components/AuthSetupHelper.tsx
+rm -f /components/SetupGuide.tsx
+rm -f /components/AdminDebugger.tsx
+rm -f /components/SecurityDebugPanel.tsx
+rm -f /components/SecurityDebugTool.tsx
+rm -f /components/ServerHealthChecker.tsx
+rm -f /components/LoginQuickTest.tsx
+rm -f /components/DoctorLoginTest.tsx
+
+# Remove temp files
+rm -f /temp-*.tsx
+rm -f /temp_*.tsx
+rm -f /temp_*.ts
+rm -f /temp_*.js
+rm -f /temp_*.txt
+rm -f /temp_*.sh
+rm -f /temp_*.md
+
+# Remove cleanup & debug files
+rm -f /*_CLEANUP*.md
+rm -f /*_SUCCESS*.md
+rm -f /*_SOLUTION*.md
+rm -f /*_FIX*.md
+rm -f /*_ADDED*.md
+rm -f /*_COMPLETED*.md
+rm -f /*_UPDATE*.md
+rm -f /*_REMOVAL*.md
+rm -f /*_GUIDE*.md
+rm -f /search_*.txt
+rm -f /table_*.txt
+rm -f /test-*.js
+rm -f /test-*.html
+rm -f /user_auth_fix.tsx
+
+echo "✅ CLEANUP COMPLETED!"
+echo "🎯 System is now clean and ready!"

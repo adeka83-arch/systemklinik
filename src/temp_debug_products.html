@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Products System</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .button { padding: 10px 15px; margin: 5px; background: #007cba; color: white; border: none; border-radius: 3px; cursor: pointer; }
+        .button:hover { background: #005a87; }
+        .success { color: green; }
+        .error { color: red; }
+        .log { background: #f5f5f5; padding: 10px; margin: 10px 0; border-radius: 3px; font-family: monospace; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <h1>Debug Products System - Falasifah Dental Clinic</h1>
+    
+    <div class="test-section">
+        <h2>1. Server Health Tests</h2>
+        <button class="button" onclick="testHealth()">Test Server Health</button>
+        <button class="button" onclick="testDebug()">Test Debug Endpoint</button>
+        <button class="button" onclick="testDatabase()">Test Database Connection</button>
+        <div id="health-results"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>2. Products API Tests</h2>
+        <button class="button" onclick="testGetProducts()">GET Products</button>
+        <button class="button" onclick="testPostProduct()">POST Product</button>
+        <button class="button" onclick="testPostProductComplete()">POST Complete Product</button>
+        <div id="products-results"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>3. Network & Auth Tests</h2>
+        <button class="button" onclick="testCORS()">Test CORS</button>
+        <button class="button" onclick="testWithAuth()">Test with Auth Token</button>
+        <div id="network-results"></div>
+    </div>
+
+    <script>
+        const serverUrl = 'https://bxtefmfkcwbyqoctpfdb.supabase.co/functions/v1/make-server-73417b67';
+        
+        function log(elementId, message, isError = false) {
+            const element = document.getElementById(elementId);
+            const timestamp = new Date().toLocaleTimeString();
+            const className = isError ? 'error' : 'success';
+            element.innerHTML += `<div class="${className}">[${timestamp}] ${message}</div>`;
+        }
+
+        function logResponse(elementId, response, data) {
+            const element = document.getElementById(elementId);
+            element.innerHTML += `<div class="log">Status: ${response.status}
+Headers: ${JSON.stringify(Object.fromEntries(response.headers), null, 2)}
+Data: ${JSON.stringify(data, null, 2)}</div>`;
+        }
+
+        // Health Tests
+        async function testHealth() {
+            try {
+                const response = await fetch(`${serverUrl}/health`);
+                const data = await response.json();
+                log('health-results', `Health check: ${data.success ? 'PASS' : 'FAIL'}`);
+                logResponse('health-results', response, data);
+            } catch (error) {
+                log('health-results', `Health check failed: ${error.message}`, true);
+            }
+        }
+
+        async function testDebug() {
+            try {
+                const response = await fetch(`${serverUrl}/debug`);
+                const data = await response.json();
+                log('health-results', `Debug endpoint: ${data.success ? 'PASS' : 'FAIL'}`);
+                logResponse('health-results', response, data);
+            } catch (error) {
+                log('health-results', `Debug test failed: ${error.message}`, true);
+            }
+        }
+
+        async function testDatabase() {
+            try {
+                const response = await fetch(`${serverUrl}/test-db`);
+                const data = await response.json();
+                log('health-results', `Database test: ${data.success ? 'PASS' : 'FAIL'}`);
+                logResponse('health-results', response, data);
+            } catch (error) {
+                log('health-results', `Database test failed: ${error.message}`, true);
+            }
+        }
+
+        // Products Tests
+        async function testGetProducts() {
+            try {
+                const response = await fetch(`${serverUrl}/products`);
+                const data = await response.json();
+                log('products-results', `GET products: ${data.success ? 'PASS' : 'FAIL'} (${data.products?.length || 0} items)`);
+                logResponse('products-results', response, data);
+            } catch (error) {
+                log('products-results', `GET products failed: ${error.message}`, true);
+            }
+        }
+
+        async function testPostProduct() {
+            const testProduct = {
+                nama: 'Test Product Simple',
+                kategori: 'Obat',
+                harga: 15000,
+                stok: 10
+            };
+
+            try {
+                const response = await fetch(`${serverUrl}/products`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(testProduct)
+                });
+                
+                const data = await response.json();
+                log('products-results', `POST product (simple): ${data.success ? 'PASS' : 'FAIL'}`);
+                logResponse('products-results', response, data);
+            } catch (error) {
+                log('products-results', `POST product (simple) failed: ${error.message}`, true);
+            }
+        }
+
+        async function testPostProductComplete() {
+            const testProduct = {
+                nama: 'Test Product Complete',
+                name: 'Test Product Complete',
+                kategori: 'Produk Medis',
+                category: 'Produk Medis',
+                harga: 250000,
+                price: 250000,
+                stok: 5,
+                stock: 5,
+                deskripsi: 'Complete test product with all fields',
+                description: 'Complete test product with all fields'
+            };
+
+            try {
+                const response = await fetch(`${serverUrl}/products`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(testProduct)
+                });
+                
+                const data = await response.json();
+                log('products-results', `POST product (complete): ${data.success ? 'PASS' : 'FAIL'}`);
+                logResponse('products-results', response, data);
+            } catch (error) {
+                log('products-results', `POST product (complete) failed: ${error.message}`, true);
+            }
+        }
+
+        // Network Tests
+        async function testCORS() {
+            try {
+                const response = await fetch(`${serverUrl}/health`, {
+                    method: 'OPTIONS'
+                });
+                log('network-results', `CORS preflight: ${response.ok ? 'PASS' : 'FAIL'}`);
+                logResponse('network-results', response, {});
+            } catch (error) {
+                log('network-results', `CORS test failed: ${error.message}`, true);
+            }
+        }
+
+        async function testWithAuth() {
+            const testProduct = {
+                nama: 'Authenticated Test Product',
+                kategori: 'Obat',
+                harga: 20000,
+                stok: 15
+            };
+
+            try {
+                const response = await fetch(`${serverUrl}/products`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer fake-token-for-testing'
+                    },
+                    body: JSON.stringify(testProduct)
+                });
+                
+                const data = await response.json();
+                log('network-results', `POST with auth: ${data.success ? 'PASS' : 'FAIL'}`);
+                logResponse('network-results', response, data);
+            } catch (error) {
+                log('network-results', `Authenticated request failed: ${error.message}`, true);
+            }
+        }
+
+        // Run initial health check
+        window.onload = function() {
+            testHealth();
+        };
+    </script>
+</body>
+</html>

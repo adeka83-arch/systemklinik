@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# File untuk menghapus file temporary yang tidak diperlukan
+rm -f /components/TreatmentsWithPreview.tsx
+rm -f /temp_cleanup.md
+rm -f /temp_complete_handlePrint.tsx
+rm -f /temp_preview_with_totals.tsx
+rm -f /temp_remove_files.sh
+rm -f /temp_remove_patients.txt
+rm -f /temp_reports_update.tsx
+
+echo "File temporary berhasil dihapus"

@@ -1,0 +1,6 @@
+Files to remove for patient module cleanup:
+- /components/Patients.tsx
+- /components/PatientsUpdated.tsx  
+- /components/ImportPatients.tsx
+
+These files contain the patient management functionality that needs to be removed from the clinic management system.

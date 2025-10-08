@@ -1,0 +1,8 @@
+COMPLETED: Removed signature sections from treatment invoice and receipt templates.
+
+Changes made:
+1. Created new TreatmentPrintTemplates.tsx with signature-free templates
+2. Updated TreatmentsWithDiscount.tsx to use new templates
+3. Both invoice and receipt templates now only show clinic info, cashier name, and thank you message without doctor/patient signatures
+
+The print templates are now clean and professional without signature areas.

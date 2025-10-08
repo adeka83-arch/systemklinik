@@ -1,0 +1,18 @@
+                           <Button
+                             size="sm"
+                             variant="outline"
+                             onClick={() => openCashierDialog(sale, 'invoice')}
+                             title="Print Invoice"
+                             className="h-8 w-8 p-0 text-green-600 hover:text-green-700 hover:bg-green-50"
+                           >
+                             <Printer className="h-4 w-4" />
+                           </Button>
+                           <Button
+                             size="sm"
+                             variant="outline"
+                             onClick={() => openCashierDialog(sale, 'receipt')}
+                             title="Print Kwitansi"
+                             className="h-8 w-8 p-0 text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                           >
+                             <Receipt className="h-4 w-4" />
+                           </Button>

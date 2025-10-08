@@ -1,0 +1,73 @@
+// ================= SIMPLE DATA ENDPOINTS FOR STATUS CHECKING =================
+
+// Get doctors list for status checking
+app.get('/make-server-73417b67/doctors', async (c) => {
+  try {
+    console.log('👨‍⚕️ Getting doctors list...')
+    
+    const doctors = await kv.getByPrefix('doctor_')
+    
+    console.log('✅ Found doctors:', doctors.length)
+    return c.json({
+      success: true,
+      doctors: doctors || [],
+      count: doctors?.length || 0
+    })
+  } catch (error) {
+    console.log('❌ Error getting doctors:', error)
+    return c.json({ 
+      success: false, 
+      error: error.message,
+      doctors: [],
+      count: 0
+    }, 500)
+  }
+})
+
+// Get employees list for status checking
+app.get('/make-server-73417b67/employees', async (c) => {
+  try {
+    console.log('👩‍💼 Getting employees list...')
+    
+    const employees = await kv.getByPrefix('employee_')
+    
+    console.log('✅ Found employees:', employees.length)
+    return c.json({
+      success: true,
+      employees: employees || [],
+      count: employees?.length || 0
+    })
+  } catch (error) {
+    console.log('❌ Error getting employees:', error)
+    return c.json({ 
+      success: false, 
+      error: error.message,
+      employees: [],
+      count: 0
+    }, 500)
+  }
+})
+
+// Get patients list for status checking
+app.get('/make-server-73417b67/patients', async (c) => {
+  try {
+    console.log('👥 Getting patients list...')
+    
+    const patients = await kv.getByPrefix('patient_')
+    
+    console.log('✅ Found patients:', patients.length)
+    return c.json({
+      success: true,
+      patients: patients || [],
+      count: patients?.length || 0
+    })
+  } catch (error) {
+    console.log('❌ Error getting patients:', error)
+    return c.json({ 
+      success: false, 
+      error: error.message,
+      patients: [],
+      count: 0
+    }, 500)
+  }
+})

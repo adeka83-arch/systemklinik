@@ -1,0 +1,6 @@
+Finding specific sections in the large file to locate:
+1. generatePrintContent function body - around line 708+
+2. X-ray section in print content
+3. Diagnosis Umum section to remove
+
+Let me search by viewing specific ranges...

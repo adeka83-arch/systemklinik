@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# Script to remove voucher-related components
+echo "🧹 Cleaning up voucher components..."
+
+# List of voucher components to remove
+voucher_components=(
+    "VoucherCard.tsx"
+    "VoucherFixShowcase.tsx"
+    "VoucherImageDemo.tsx"
+    "VoucherReminder.tsx"
+    "VoucherReminderList.tsx"
+    "VoucherSelector.tsx"
+    "VoucherStatusList.tsx"
+    "VoucherStatusListFixed.tsx"
+    "VoucherUsage.tsx"
+    "VoucherUsageDemo.tsx"
+    "VoucherUsageHistory.tsx"
+)
+
+# Remove each component
+for component in "${voucher_components[@]}"; do
+    if [ -f "/components/$component" ]; then
+        echo "🗑️ Removing $component"
+        rm "/components/$component"
+    else
+        echo "⚠️ $component not found"
+    fi
+done
+
+echo "✅ Voucher component cleanup completed"

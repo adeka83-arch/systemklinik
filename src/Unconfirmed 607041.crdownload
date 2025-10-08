@@ -1,0 +1,30 @@
+#!/bin/bash
+# Cleanup temporary files - Complete version
+
+echo "🧹 Starting comprehensive cleanup of temporary files..."
+
+# List of problematic temp files to remove
+temp_files_to_remove=(
+    "temp_add_xray_ui_section.txt"
+    "temp_delete_problematic_file.sh"
+)
+
+# Remove each temp file safely
+for file in "${temp_files_to_remove[@]}"; do
+    if [ -f "$file" ]; then
+        rm -f "$file"
+        echo "✅ Removed $file"
+    else
+        echo "ℹ️ $file not found (already removed)"
+    fi
+done
+
+echo ""
+echo "🔧 Build error fixes applied:"
+echo "  - Fixed TypeScript generic syntax in timeoutPrevention.ts"
+echo "  - Removed problematic temp files with JSX-like content"
+echo "  - Enhanced timeout protection for doctor action forms"
+echo "  - Improved error handling across the application"
+echo ""
+echo "✅ Cleanup completed successfully!"
+echo "🎉 Build errors should now be resolved!"

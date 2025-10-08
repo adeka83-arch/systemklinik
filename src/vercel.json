@@ -1,0 +1,23 @@
+{
+  "version": 2,
+  "name": "sistem-absensi-klinik",
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ],
+  "env": {
+    "VITE_SUPABASE_URL": "https://hgzmzbkzgojgxqyurqzy.supabase.co",
+    "VITE_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhnem16Ymt6Z29qZ3hxeXVycXp5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY2NjQ0MDAsImV4cCI6MjA3MjI0MDQwMH0.J3_QOmz-wsm1VKs0k6GDixoOjKJX4-YwRts3-G6ql4U"
+  }
+}

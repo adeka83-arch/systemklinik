@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Products Endpoint</title>
+</head>
+<body>
+    <h1>Test Products Endpoint</h1>
+    <div id="status"></div>
+    <button onclick="testProductsGet()">Test GET Products</button>
+    <button onclick="testProductsPost()">Test POST Product</button>
+    <div id="results"></div>
+
+    <script>
+        const serverUrl = 'https://bxtefmfkcwbyqoctpfdb.supabase.co/functions/v1/make-server-73417b67';
+        const token = 'fake-token'; // We'll test without auth first
+
+        function updateStatus(message) {
+            document.getElementById('status').innerHTML = message;
+        }
+
+        async function testProductsGet() {
+            updateStatus('Testing GET /products...');
+            try {
+                const response = await fetch(`${serverUrl}/products`);
+                const data = await response.json();
+                
+                document.getElementById('results').innerHTML = `
+                    <h3>GET Products Result:</h3>
+                    <p>Status: ${response.status}</p>
+                    <p>Success: ${data.success}</p>
+                    <p>Products count: ${data.products?.length || 0}</p>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+                updateStatus('GET test completed');
+            } catch (error) {
+                updateStatus('GET test failed: ' + error.message);
+                document.getElementById('results').innerHTML = `<p>Error: ${error.message}</p>`;
+            }
+        }
+
+        async function testProductsPost() {
+            updateStatus('Testing POST /products...');
+            
+            const testProduct = {
+                nama: 'Test Product',
+                kategori: 'Obat',
+                harga: 15000,
+                stok: 10,
+                deskripsi: 'Test product description'
+            };
+
+            try {
+                const response = await fetch(`${serverUrl}/products`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(testProduct)
+                });
+                
+                const data = await response.json();
+                
+                document.getElementById('results').innerHTML = `
+                    <h3>POST Product Result:</h3>
+                    <p>Status: ${response.status}</p>
+                    <p>Success: ${data.success}</p>
+                    <p>Message: ${data.message || data.error}</p>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+                updateStatus('POST test completed');
+            } catch (error) {
+                updateStatus('POST test failed: ' + error.message);
+                document.getElementById('results').innerHTML = `<p>Error: ${error.message}</p>`;
+            }
+        }
+
+        // Test health check first
+        async function testHealth() {
+            try {
+                const response = await fetch(`${serverUrl}/health`);
+                const data = await response.json();
+                updateStatus(`Server health: ${data.success ? 'OK' : 'Failed'}`);
+            } catch (error) {
+                updateStatus(`Server health check failed: ${error.message}`);
+            }
+        }
+
+        // Run health check on load
+        testHealth();
+    </script>
+</body>
+</html>

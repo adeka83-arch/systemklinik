@@ -1,0 +1,1 @@
+Search for diagnosis and xray sections in generatePrintContent function

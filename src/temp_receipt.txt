@@ -1,0 +1,216 @@
+  // Fungsi untuk konversi angka ke terbilang bahasa Indonesia
+  const numberToWords = (num: number): string => {
+    if (num === 0) return 'nol'
+    
+    const ones = ['', 'satu', 'dua', 'tiga', 'empat', 'lima', 'enam', 'tujuh', 'delapan', 'sembilan']
+    const teens = ['sepuluh', 'sebelas', 'dua belas', 'tiga belas', 'empat belas', 'lima belas', 
+                   'enam belas', 'tujuh belas', 'delapan belas', 'sembilan belas']
+    const tens = ['', '', 'dua puluh', 'tiga puluh', 'empat puluh', 'lima puluh', 
+                  'enam puluh', 'tujuh puluh', 'delapan puluh', 'sembilan puluh']
+    
+    const convertChunk = (n: number): string => {
+      let result = ''
+      
+      if (n >= 100) {
+        if (Math.floor(n / 100) === 1) {
+          result += 'seratus '
+        } else {
+          result += ones[Math.floor(n / 100)] + ' ratus '
+        }
+        n %= 100
+      }
+      
+      if (n >= 20) {
+        result += tens[Math.floor(n / 10)] + ' '
+        n %= 10
+      } else if (n >= 10) {
+        result += teens[n - 10] + ' '
+        return result.trim()
+      }
+      
+      if (n > 0) {
+        result += ones[n] + ' '
+      }
+      
+      return result.trim()
+    }
+    
+    if (num < 1000) {
+      return convertChunk(num)
+    } else if (num < 1000000) {
+      const thousands = Math.floor(num / 1000)
+      const remainder = num % 1000
+      let result = ''
+      
+      if (thousands === 1) {
+        result = 'seribu'
+      } else {
+        result = convertChunk(thousands) + ' ribu'
+      }
+      
+      if (remainder > 0) {
+        result += ' ' + convertChunk(remainder)
+      }
+      
+      return result
+    } else if (num < 1000000000) {
+      const millions = Math.floor(num / 1000000)
+      const remainder = num % 1000000
+      let result = convertChunk(millions) + ' juta'
+      
+      if (remainder > 0) {
+        result += ' ' + numberToWords(remainder)
+      }
+      
+      return result
+    } else {
+      const billions = Math.floor(num / 1000000000)
+      const remainder = num % 1000000000
+      let result = convertChunk(billions) + ' miliar'
+      
+      if (remainder > 0) {
+        result += ' ' + numberToWords(remainder)
+      }
+      
+      return result
+    }
+  }
+
+  const generateReceiptWithCashier = (treatment: Treatment, cashierName: string, transactionDate: string) => {
+    const receiptWindow = window.open('', '_blank')
+    if (!receiptWindow) return
+
+    // Generate receipt number based on date and treatment ID
+    const receiptNumber = `KWT/${new Date(transactionDate).getFullYear()}/${String(new Date(transactionDate).getMonth() + 1).padStart(2, '0')}/${treatment.id.slice(-6).toUpperCase()}`
+    
+    // Calculate total payment
+    const totalPayment = (treatment.totalNominal || 0) + (treatment.medicationCost || 0)
+    const totalPaymentWords = numberToWords(totalPayment)
+
+    const receiptHTML = `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Kwitansi - ${treatment.patientName}</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; font-size: 14px; line-height: 1.6; color: #333; }
+        .receipt-container { max-width: 800px; margin: 20px auto; padding: 20px; border: 2px solid #e91e63; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .clinic-name { font-size: 24px; font-weight: bold; color: #e91e63; margin-bottom: 5px; }
+        .clinic-info { font-size: 12px; color: #666; margin-bottom: 20px; }
+        .receipt-title { font-size: 20px; font-weight: bold; color: #e91e63; margin: 20px 0; text-decoration: underline; }
+        .receipt-number { font-size: 14px; color: #333; margin-bottom: 20px; }
+        .receipt-info { margin-bottom: 20px; }
+        .info-row { display: flex; margin-bottom: 8px; }
+        .info-label { width: 200px; font-weight: bold; }
+        .info-value { flex: 1; }
+        .amount-section { margin: 30px 0; }
+        .amount-row { display: flex; justify-content: space-between; margin-bottom: 10px; }
+        .amount-label { font-weight: bold; }
+        .amount-value { font-weight: bold; }
+        .total-amount { font-size: 18px; color: #e91e63; border: 2px solid #e91e63; padding: 10px; margin: 20px 0; }
+        .words-section { margin: 20px 0; border: 1px solid #ddd; padding: 15px; background: #f8f9fa; }
+        .words-label { font-weight: bold; margin-bottom: 5px; }
+        .words-value { font-style: italic; text-transform: capitalize; }
+        .signature-section { margin-top: 40px; display: flex; justify-content: space-between; }
+        .signature-box { width: 200px; text-align: center; }
+        .signature-line { border-top: 1px solid #333; margin-top: 60px; padding-top: 5px; font-size: 12px; }
+        .footer { margin-top: 40px; text-align: center; font-size: 12px; color: #666; }
+        @media print {
+            body { margin: 0; }
+            .receipt-container { margin: 0; padding: 15px; }
+            .no-print { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="receipt-container">
+        <div class="header">
+            <div class="clinic-name">Falasifah Dental Clinic</div>
+            <div class="clinic-info">Klinik Gigi Terpercaya</div>
+        </div>
+        
+        <div class="receipt-title">KWITANSI PEMBAYARAN</div>
+        <div class="receipt-number">No. Kwitansi: ${receiptNumber}</div>
+        
+        <div class="receipt-info">
+            <div class="info-row">
+                <div class="info-label">Sudah terima dari:</div>
+                <div class="info-value">${treatment.patientName}</div>
+            </div>
+            <div class="info-row">
+                <div class="info-label">No. Telp:</div>
+                <div class="info-value">${treatment.patientPhone || '-'}</div>
+            </div>
+            <div class="info-row">
+                <div class="info-label">Tanggal Transaksi:</div>
+                <div class="info-value">${new Date(transactionDate).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</div>
+            </div>
+            <div class="info-row">
+                <div class="info-label">Dokter yang menangani:</div>
+                <div class="info-value">${treatment.doctorName}</div>
+            </div>
+            <div class="info-row">
+                <div class="info-label">Untuk pembayaran:</div>
+                <div class="info-value">Tindakan medis gigi dan obat-obatan</div>
+            </div>
+        </div>
+        
+        <div class="amount-section">
+            <div class="amount-row">
+                <div class="amount-label">Total Tindakan (setelah diskon):</div>
+                <div class="amount-value">${formatCurrency(treatment.totalNominal || 0)}</div>
+            </div>
+            ${(treatment.medicationCost || 0) > 0 ? `
+            <div class="amount-row">
+                <div class="amount-label">Biaya Obat:</div>
+                <div class="amount-value">${formatCurrency(treatment.medicationCost || 0)}</div>
+            </div>
+            ` : ''}
+            <div class="total-amount">
+                <div class="amount-row">
+                    <div class="amount-label">TOTAL YANG DIBAYAR:</div>
+                    <div class="amount-value">${formatCurrency(totalPayment)}</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="words-section">
+            <div class="words-label">Terbilang:</div>
+            <div class="words-value">${totalPaymentWords} rupiah</div>
+        </div>
+        
+        <div class="signature-section">
+            <div class="signature-box">
+                <div class="signature-line">
+                    Kasir<br>
+                    ${cashierName}
+                </div>
+            </div>
+            <div class="signature-box">
+                <div class="signature-line">
+                    Yang Menerima<br>
+                    ${treatment.patientName}
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Kwitansi ini merupakan bukti pembayaran yang sah</p>
+            <p>Tanggal Transaksi: ${new Date(transactionDate).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+            <p>Kwitansi ini dicetak pada: ${new Date().toLocaleString('id-ID')}</p>
+        </div>
+        
+        <div class="no-print" style="text-align: center; margin-top: 20px;">
+            <button onclick="window.print()" style="background: #e91e63; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Cetak Kwitansi</button>
+            <button onclick="window.close()" style="background: #6b7280; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-left: 10px;">Tutup</button>
+        </div>
+    </div>
+</body>
+</html>`
+
+    receiptWindow.document.write(receiptHTML)
+    receiptWindow.document.close()
+  }

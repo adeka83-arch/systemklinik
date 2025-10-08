@@ -1,0 +1,1 @@
+Looking for attendance endpoints in the server file. Need to add PUT endpoint for attendance update.

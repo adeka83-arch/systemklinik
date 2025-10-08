@@ -1,0 +1,116 @@
+  const generateReceiptWithCashier = (treatment: Treatment, cashierName: string, transactionDate: string) => {
+    const receiptWindow = window.open('', '_blank')
+    if (!receiptWindow) return
+
+    const receiptNumber = `KWT/${new Date().getFullYear()}/${String(new Date().getMonth() + 1).padStart(2, '0')}/${Math.floor(Math.random() * 1000000)}`
+
+    const receiptHTML = `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Kwitansi - ${treatment.patientName}</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; font-size: 16px; line-height: 1.6; color: #333; }
+        .receipt-container { max-width: 600px; margin: 20px auto; padding: 30px; border: 2px solid #e91e63; }
+        .header { text-align: center; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 2px solid #e91e63; }
+        .clinic-name { font-size: 20px; font-weight: bold; color: #e91e63; margin-bottom: 5px; }
+        .clinic-address { font-size: 12px; color: #666; line-height: 1.4; }
+        .receipt-title { font-size: 22px; font-weight: bold; color: #e91e63; margin: 20px 0; text-align: center; }
+        .receipt-number { text-align: center; font-size: 14px; color: #666; margin-bottom: 30px; }
+        .receipt-info { margin-bottom: 30px; }
+        .info-row { display: flex; margin-bottom: 8px; align-items: flex-start; }
+        .info-label { width: 200px; font-weight: normal; flex-shrink: 0; }
+        .info-separator { margin: 0 10px; flex-shrink: 0; }
+        .info-value { flex: 1; font-weight: bold; }
+        .total-section { margin-top: 30px; padding-top: 20px; border-top: 2px solid #e91e63; }
+        .total-amount { text-align: right; font-size: 20px; font-weight: bold; color: #e91e63; }
+        .signature-section { margin-top: 50px; display: flex; justify-content: space-between; }
+        .signature-box { text-align: center; width: 200px; }
+        .signature-line { border-bottom: 1px solid #333; margin-bottom: 10px; height: 60px; }
+        @media print {
+            body { margin: 0; }
+            .receipt-container { margin: 0; border: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="receipt-container">
+        <div class="header">
+            <div class="clinic-name">Falasifah Dental Clinic</div>
+            <div class="clinic-address">
+                Jl Raihan, Villa Rizki Ilhami 2 Ruko RA/19<br>
+                Sawangan Lama, Kec. Sawangan. Depok. Jawa Barat<br>
+                Telp/WA: 085283228355
+            </div>
+        </div>
+
+        <div class="receipt-title">KWITANSI PEMBAYARAN</div>
+        <div class="receipt-number">No: ${receiptNumber}</div>
+
+        <div class="receipt-info">
+            <div class="info-row">
+                <span class="info-label">Telah terima dari</span>
+                <span class="info-separator">:</span>
+                <span class="info-value">${treatment.patientName}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Uang sejumlah</span>
+                <span class="info-separator">:</span>
+                <span class="info-value">Rp ${treatment.totalTindakan.toLocaleString('id-ID')}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Terbilang</span>
+                <span class="info-separator">:</span>
+                <span class="info-value">${numberToWords(treatment.totalTindakan)} rupiah</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Untuk pembayaran</span>
+                <span class="info-separator">:</span>
+                <span class="info-value">${(treatment.treatmentTypes || []).map(t => t.name).join(', ')}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Dokter yang menangani</span>
+                <span class="info-separator">:</span>
+                <span class="info-value">${treatment.doctorName}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Tanggal transaksi</span>
+                <span class="info-separator">:</span>
+                <span class="info-value">${new Date(transactionDate).toLocaleDateString('id-ID', { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                })}</span>
+            </div>
+        </div>
+
+        <div class="total-section">
+            <div class="total-amount">
+                JUMLAH YANG DIBAYARKAN: Rp ${treatment.totalTindakan.toLocaleString('id-ID')}
+            </div>
+        </div>
+
+        <div class="signature-section">
+            <div class="signature-box">
+                <div class="signature-line"></div>
+                <div>Yang Menerima</div>
+                <div style="margin-top: 5px; font-size: 14px;">(${cashierName})</div>
+            </div>
+            <div class="signature-box">
+                <div class="signature-line"></div>
+                <div>Yang Membayar</div>
+                <div style="margin-top: 5px; font-size: 14px;">(${treatment.patientName})</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+    `
+
+    receiptWindow.document.write(receiptHTML)
+    receiptWindow.document.close()
+    receiptWindow.print()
+  }

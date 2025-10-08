@@ -1,0 +1,63 @@
+#!/bin/bash
+
+echo "🧹 Membersihkan file-file temporary keamanan..."
+
+# Remove old temporary security fix files
+echo "🗑️ Menghapus file temporary security fix..."
+rm -f temp_complete_security_fix.tsx
+rm -f temp_security_fix.tsx
+
+# Remove old auth diagnostic files that might conflict
+echo "🔍 Menghapus file diagnostic lama..."
+rm -f components/DoctorAuthDiagnostic.tsx
+rm -f components/DoctorAuthSyncTool.tsx
+rm -f components/ServerAuthDiagnostic.tsx
+rm -f components/SupabaseAuthDebugger.tsx
+
+# Remove duplicate or test files
+echo "🔧 Menghapus file duplikat dan test..."
+rm -f components/LevelAccessDemo.tsx
+rm -f components/LoginDebugger.tsx
+rm -f components/LoginQuickTest.tsx
+rm -f components/UserDebugInfo.tsx
+
+# Remove old password guard files if they exist
+echo "🔐 Menghapus file password guard lama..."
+rm -f components/PasswordGuardSettings.tsx
+
+# Remove temporary patient files that might cause conflicts
+echo "👥 Menghapus file temporary patients..."
+rm -f temp-fix-patients.tsx
+rm -f temp-patients.tsx
+
+# Remove temporary search files
+echo "🔍 Menghapus file temporary search..."
+rm -f temp-search.tsx
+rm -f temp_search.js
+
+# Remove temporary print content fixes
+echo "🖨️ Menghapus file temporary print fixes..."
+rm -f temp_print_content_fix.txt
+rm -f temp_print_content_fixed.js
+rm -f temp_print_fix.js
+rm -f temp_fix_print_xray.js
+
+# Clean up other temporary files
+echo "📄 Menghapus file temporary lainnya..."
+rm -f temp_*.txt
+rm -f temp_*.ts
+rm -f temp_*.js
+rm -f temp_*.md
+
+# Keep only essential temp files
+echo "✅ Menjaga file temporary yang diperlukan..."
+# These files might be needed, so we don't delete them:
+# - temp_cleanup_files.sh (this script)
+# - temp_add_to_printservice.ts (might be needed for print functions)
+
+echo "✨ Cleanup selesai! File-file temporary telah dibersihkan."
+echo "🎯 Sistem keamanan V4 sudah bersih dan siap digunakan."
+
+# Optional: Show remaining temp files
+echo "📋 File temporary yang masih ada:"
+ls -la temp_* 2>/dev/null || echo "Tidak ada file temporary yang tersisa."

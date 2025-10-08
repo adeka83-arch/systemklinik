@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Setup Database - Falasifah Dental Clinic</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            max-width: 800px; 
+            margin: 40px auto; 
+            padding: 20px;
+            background: linear-gradient(to bottom right, #fdf2f8, #ffffff);
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 2px solid #fce7f3;
+        }
+        h1 { color: #be185d; text-align: center; }
+        .step {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #e5e7eb;
+            border-radius: 5px;
+            background: #f9fafb;
+        }
+        button {
+            background: #be185d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #9d174d; }
+        button:disabled { background: #d1d5db; cursor: not-allowed; }
+        .result {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            font-size: 14px;
+        }
+        .success { background: #d1fae5; border: 1px solid #10b981; color: #065f46; }
+        .error { background: #fee2e2; border: 1px solid #ef4444; color: #991b1b; }
+        .info { background: #dbeafe; border: 1px solid #3b82f6; color: #1e40af; }
+        .loading { background: #fef3c7; border: 1px solid #f59e0b; color: #92400e; }
+        .credential-box {
+            background: #f3e8ff;
+            border: 2px solid #a855f7;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        .credential-box h3 { color: #7c3aed; margin-top: 0; }
+        .credential-item { margin: 5px 0; font-family: monospace; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏥 Test Setup Database Falasifah Dental Clinic</h1>
+        
+        <div class="credential-box">
+            <h3>📋 Informasi Database Baru</h3>
+            <div class="credential-item"><strong>Database URL:</strong> https://bxtefmfkcwbyqoctpfdb.supabase.co</div>
+            <div class="credential-item"><strong>Server Endpoint:</strong> https://bxtefmfkcwbyqoctpfdb.supabase.co/functions/v1/make-server-73417b67</div>
+        </div>
+
+        <div class="credential-box">
+            <h3>👤 User Account yang Akan Dibuat</h3>
+            <div class="credential-item"><strong>Email:</strong> adeka83@gmail.com</div>
+            <div class="credential-item"><strong>Password:</strong> 1sampai9</div>
+            <div class="credential-item"><strong>Nama:</strong> Ade Mardiansyah Eka Putra</div>
+            <div class="credential-item"><strong>Role:</strong> Administrator</div>
+            <div class="credential-item"><strong>Status:</strong> auth (bisa login)</div>
+        </div>
+
+        <div class="step">
+            <h3>Step 1: Periksa Status Database</h3>
+            <p>Cek status database saat ini dan apakah user sudah ada</p>
+            <button onclick="checkSetup()">🔍 Periksa Status Database</button>
+            <div id="checkResult" class="result"></div>
+        </div>
+
+        <div class="step">
+            <h3>Step 2: Setup User Account</h3>
+            <p>Buat user account dengan email dan password yang sudah ditentukan</p>
+            <button onclick="setupUser()">🚀 Setup User Account</button>
+            <div id="setupResult" class="result"></div>
+        </div>
+
+        <div class="step">
+            <h3>Step 3: Test Login (Manual)</h3>
+            <p>Setelah setup berhasil, buka aplikasi dan coba login dengan:</p>
+            <div class="credential-box">
+                <div class="credential-item"><strong>Email:</strong> adeka83@gmail.com</div>
+                <div class="credential-item"><strong>Password:</strong> 1sampai9</div>
+            </div>
+            <p>
+                <a href="/" target="_blank" style="color: #be185d; text-decoration: none;">
+                    🔗 Buka Aplikasi untuk Test Login
+                </a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const serverUrl = 'https://bxtefmfkcwbyqoctpfdb.supabase.co/functions/v1/make-server-73417b67';
+
+        async function checkSetup() {
+            const resultDiv = document.getElementById('checkResult');
+            resultDiv.className = 'result loading';
+            resultDiv.textContent = '⏳ Memeriksa status database...';
+
+            try {
+                const response = await fetch(`${serverUrl}/check-setup`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    resultDiv.className = 'result success';
+                    let message = '✅ Status Database:\n\n';
+                    message += `📊 Total Employees: ${result.data.totalEmployees}\n`;
+                    message += `👨‍⚕️ Total Doctors: ${result.data.totalDoctors}\n`;
+                    message += `🔐 Auth Employees: ${result.data.authEmployees}\n`;
+                    message += `🔐 Auth Doctors: ${result.data.authDoctors}\n`;
+                    message += `👤 User Adeka Exists: ${result.data.adekaUserExists ? '✅ Ya' : '❌ Tidak'}\n\n`;
+                    
+                    if (result.data.authEmployeesList && result.data.authEmployeesList.length > 0) {
+                        message += '👥 Auth Employees:\n';
+                        result.data.authEmployeesList.forEach(emp => {
+                            message += `  • ${emp.name} (${emp.email})\n`;
+                        });
+                    }
+                    
+                    if (result.data.adekaUserExists) {
+                        message += '\n🎉 User sudah ada! Bisa langsung login ke aplikasi.';
+                    } else {
+                        message += '\n⚠️ User belum ada. Lanjut ke Step 2 untuk setup user.';
+                    }
+                    
+                    resultDiv.textContent = message;
+                } else {
+                    throw new Error(result.error || 'Gagal memeriksa status');
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = `❌ Error: ${error.message}`;
+            }
+        }
+
+        async function setupUser() {
+            const resultDiv = document.getElementById('setupResult');
+            resultDiv.className = 'result loading';
+            resultDiv.textContent = '⏳ Membuat user account...';
+
+            try {
+                const response = await fetch(`${serverUrl}/quick-setup-adeka`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        timestamp: new Date().toISOString()
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`HTTP ${response.status}: ${errorText}`);
+                }
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    resultDiv.className = 'result success';
+                    let message = '🎉 Setup Berhasil!\n\n';
+                    
+                    if (result.instructions) {
+                        message += '📋 Yang telah dibuat:\n';
+                        result.instructions.forEach(instruction => {
+                            message += `${instruction}\n`;
+                        });
+                    }
+                    
+                    message += '\n🔑 Login Info:\n';
+                    message += `Email: ${result.user.email}\n`;
+                    message += `Name: ${result.user.name}\n`;
+                    message += `Role: ${result.user.role}\n`;
+                    message += `Position: ${result.user.position}\n`;
+                    message += `User Type: ${result.user.userType}\n`;
+                    message += `Has Auth Access: ${result.user.hasAuthAccess}\n\n`;
+                    message += '✅ Sekarang bisa login ke aplikasi dengan email dan password yang sudah ditentukan!';
+                    
+                    resultDiv.textContent = message;
+                } else {
+                    throw new Error(result.error || 'Setup gagal');
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = `❌ Error: ${error.message}`;
+            }
+        }
+
+        // Auto-check pada page load
+        window.onload = function() {
+            setTimeout(checkSetup, 1000);
+        };
+    </script>
+</body>
+</html>

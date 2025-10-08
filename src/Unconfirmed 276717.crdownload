@@ -1,0 +1,2 @@
+#!/bin/bash
+tail -50 /supabase/functions/server/index.tsx

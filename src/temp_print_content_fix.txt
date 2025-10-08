@@ -1,0 +1,9 @@
+I need to replace the generatePrintContent function to:
+1. Remove "Diagnosis Umum" section 
+2. Move X-ray to separate page with page-break
+3. Keep form manual on separate page
+
+The changes needed are:
+- Remove commonDiagnoses section from print
+- Add page-break before X-ray section
+- Ensure X-ray doesn't get cut off

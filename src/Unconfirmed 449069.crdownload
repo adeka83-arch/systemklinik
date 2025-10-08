@@ -1,0 +1,13 @@
+#!/bin/bash
+
+echo "🧹 CLEANING UP SERVER FILES..."
+
+# Keep only essential files
+# Keep: index.tsx, kv_store.tsx
+# Remove the rest
+
+rm -f /supabase/functions/server/doctor_auth_endpoints.tsx
+rm -f /supabase/functions/server/setup-user.tsx
+rm -f /supabase/functions/server/new_endpoints.tsx
+
+echo "✅ SERVER CLEANUP COMPLETED!"

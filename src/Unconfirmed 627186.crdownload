@@ -1,0 +1,11 @@
+#!/bin/bash
+# Delete the problematic temp file
+
+if [ -f "temp_add_xray_ui_section.txt" ]; then
+    rm -f temp_add_xray_ui_section.txt
+    echo "✅ Removed temp_add_xray_ui_section.txt"
+else
+    echo "ℹ️ File not found"
+fi
+
+echo "✅ Cleanup completed"

@@ -1,0 +1,47 @@
+Saya sudah melakukan perubahan berikut pada sistem perhitungan fee dokter:
+
+1. LOGIKA PERHITUNGAN BARU:
+   - Fee dokter = Total tindakan × persentase
+   - Total tindakan = Total final + biaya admin + biaya obat
+
+2. PERUBAHAN YANG TELAH DILAKUKAN:
+
+   a. Interface Treatment (baris 48-68):
+      - Menambahkan medicationCost: number
+      - Menambahkan totalTindakan: number
+
+   b. Form Data State (baris 89-99):
+      - Menambahkan medicationCost: ''
+
+   c. State Variables (baris 100-105):
+      - Menambahkan totalTindakan state
+
+   d. Perhitungan Fee (baris 163-173):
+      - Mengubah rumus menjadi: totalTindakan = totalNominal + adminFee + medicationCost
+      - Fee = totalTindakan × persentase
+
+   e. Form Input (sudah ada di baris yang diperbarui):
+      - Menambahkan field input untuk biaya obat
+      - Layout grid menjadi 3 kolom untuk menampung field baru
+
+   f. Tampilan Perhitungan (sudah ada di display calculation):
+      - Menampilkan breakdown: Total Final + Admin Fee + Obat = Total Tindakan
+      - Fee dokter dihitung dari Total Tindakan × persentase
+
+   g. Table Headers (baris yang sudah diperbarui):
+      - Menambahkan kolom "Obat" dan "Total Tindakan"
+
+   h. Backend Logging (index.tsx):
+      - Memperbarui logging untuk mencatat field baru
+
+   i. calculateDoctorFees Function:
+      - Memperbarui logika perhitungan aggregate fee dokter
+
+3. RUMUS BARU YANG SUDAH AKTIF:
+   - Total Tindakan = Total Final (setelah diskon) + Biaya Admin + Biaya Obat
+   - Fee Dokter = Total Tindakan × Persentase Fee
+   
+   Ini menggantikan rumus lama:
+   - Fee Dokter = (Total Final × persentase) - Biaya Admin
+
+Sistem sekarang sudah menggunakan perhitungan baru sesuai permintaan.
